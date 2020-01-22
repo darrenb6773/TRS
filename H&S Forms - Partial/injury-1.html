@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+
+<head>
+<title>Workplace Injury Notification</title>
+<link href="injury.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"><!-- hide from old browsers
+// turn on/off any "other"fields
+function fb_other_on (othername) {
+    var box = document.getElementById(othername);
+    box.removeAttribute('disabled');
+}
+
+function fb_other_off (othername) {
+    var box = document.getElementById(othername);
+    box.setAttribute('disabled', 'disabled');
+}
+
+function validate (form) {
+    var alertstr = '';
+    var invalid  = 0;
+    var invalid_fields = new Array();
+
+  // skip validation
+  if (this._submit.value == 'Cancel') return true;
+    // brand: radio group or multiple checkboxes
+    var brand = null;
+    var selected_brand = 0;
+    for (var loop = 0; loop < form.elements['brand'].length; loop++) {
+        if (form.elements['brand'][loop].checked) {
+            brand = form.elements['brand'][loop].value;
+            selected_brand++;
+            if (brand == null || brand === "") {
+                alertstr += '- Choose one of the "Brand" options\n';
+                invalid++;
+                invalid_fields.push('brand');
+            }
+        } // if
+    } // for brand
+    if (! selected_brand) {
+        alertstr += '- Choose one of the "Brand" options\n';
+        invalid++;
+        invalid_fields.push('brand');
+    }
+
+    // location: select list, always assume it's multiple to get all values
+    var location = null;
+    var selected_location = 0;
+    for (var loop = 0; loop < form.elements['location'].options.length; loop++) {
+        if (form.elements['location'].options[loop].selected) {
+            location = form.elements['location'].options[loop].value;
+            selected_location++;
+            if (location == null || location === "") {
+                alertstr += '- Select an option from the "Location of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('location');
+            }
+        } // if
+    } // for location
+    if (! selected_location) {
+        alertstr += '- Select an option from the "Location of person reporting" list\n';
+        invalid++;
+    }
+
+    // reporter: standard text, hidden, password, or textarea box
+    var reporter = form.elements['reporter'].value;
+    if (reporter == null || reporter === "") {
+        alertstr += '- Invalid entry for the "Full name of person reporting" field\n';
+        invalid++;
+        invalid_fields.push('reporter');
+    }
+    // position: select list, always assume it's multiple to get all values
+    var position = null;
+    var selected_position = 0;
+    for (var loop = 0; loop < form.elements['position'].options.length; loop++) {
+        if (form.elements['position'].options[loop].selected) {
+            position = form.elements['position'].options[loop].value;
+            selected_position++;
+            if (position == null || position === "") {
+                alertstr += '- Select an option from the "Position of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('position');
+            }
+        } // if
+    } // for position
+    if (! selected_position) {
+        alertstr += '- Select an option from the "Position of person reporting" list\n';
+        invalid++;
+    }
+
+    // injuryDate: standard text, hidden, password, or textarea box
+    var injuryDate = form.elements['injuryDate'].value;
+    if (injuryDate == null || ! injuryDate.match(/^(0?[1-9]|[1-2][0-9]|3[0-1])\/?(0?[1-9]|1[0-2])\/?[0-9]{4}$/)) {
+        alertstr += '- Invalid entry for the "Date of injury" field\n';
+        invalid++;
+        invalid_fields.push('injuryDate');
+    }
+    // injuryTime: standard text, hidden, password, or textarea box
+    var injuryTime = form.elements['injuryTime'].value;
+    if (injuryTime == null || ! injuryTime.match(/\d?\d:\d{2}/)) {
+        alertstr += '- Invalid entry for the "Time of injury" field\n';
+        invalid++;
+        invalid_fields.push('injuryTime');
+    }
+    // injuredPosition: select list, always assume it's multiple to get all values
+    var injuredPosition = null;
+    var selected_injuredPosition = 0;
+    for (var loop = 0; loop < form.elements['injuredPosition'].options.length; loop++) {
+        if (form.elements['injuredPosition'].options[loop].selected) {
+            injuredPosition = form.elements['injuredPosition'].options[loop].value;
+            selected_injuredPosition++;
+            if (injuredPosition == null || injuredPosition === "") {
+                alertstr += '- Select an option from the "Position of injured person" list\n';
+                invalid++;
+                invalid_fields.push('injuredPosition');
+            }
+        } // if
+    } // for injuredPosition
+    if (! selected_injuredPosition) {
+        alertstr += '- Select an option from the "Position of injured person" list\n';
+        invalid++;
+    }
+
+    // injuredStatus: select list, always assume it's multiple to get all values
+    var injuredStatus = null;
+    var selected_injuredStatus = 0;
+    for (var loop = 0; loop < form.elements['injuredStatus'].options.length; loop++) {
+        if (form.elements['injuredStatus'].options[loop].selected) {
+            injuredStatus = form.elements['injuredStatus'].options[loop].value;
+            selected_injuredStatus++;
+            if (injuredStatus == null || injuredStatus === "") {
+                alertstr += '- Select an option from the "Injured person\'s status" list\n';
+                invalid++;
+                invalid_fields.push('injuredStatus');
+            }
+        } // if
+    } // for injuredStatus
+    if (! selected_injuredStatus) {
+        alertstr += '- Select an option from the "Injured person\'s status" list\n';
+        invalid++;
+    }
+
+    // serviceLength: select list, always assume it's multiple to get all values
+    var serviceLength = null;
+    var selected_serviceLength = 0;
+    for (var loop = 0; loop < form.elements['serviceLength'].options.length; loop++) {
+        if (form.elements['serviceLength'].options[loop].selected) {
+            serviceLength = form.elements['serviceLength'].options[loop].value;
+            selected_serviceLength++;
+            if (serviceLength == null || serviceLength === "") {
+                alertstr += '- Select an option from the "Length of service" list\n';
+                invalid++;
+                invalid_fields.push('serviceLength');
+            }
+        } // if
+    } // for serviceLength
+    if (! selected_serviceLength) {
+        alertstr += '- Select an option from the "Length of service" list\n';
+        invalid++;
+    }
+
+    // injuredName: standard text, hidden, password, or textarea box
+    var injuredName = form.elements['injuredName'].value;
+    if (injuredName == null || injuredName === "") {
+        alertstr += '- Invalid entry for the "Full name of injured person" field\n';
+        invalid++;
+        invalid_fields.push('injuredName');
+    }
+    // injuryDetail: standard text, hidden, password, or textarea box
+    var injuryDetail = form.elements['injuryDetail'].value;
+    if (injuryDetail == null || injuryDetail === "") {
+        alertstr += '- Invalid entry for the "Details of Injury" field\n';
+        invalid++;
+        invalid_fields.push('injuryDetail');
+    }
+    // activity: standard text, hidden, password, or textarea box
+    var activity = form.elements['activity'].value;
+    if (activity == null || activity === "") {
+        alertstr += '- Invalid entry for the "What was the activity being completed at the time of injury?" field\n';
+        invalid++;
+        invalid_fields.push('activity');
+    }
+    // area: standard text, hidden, password, or textarea box
+    var area = form.elements['area'].value;
+    if (area == null || area === "") {
+        alertstr += '- Invalid entry for the "Where in the workplace did the injury occur?" field\n';
+        invalid++;
+        invalid_fields.push('area');
+    }
+    // occurred: standard text, hidden, password, or textarea box
+    var occurred = form.elements['occurred'].value;
+    if (occurred == null || occurred === "") {
+        alertstr += '- Invalid entry for the "Describe exactly how the injury occurred" field\n';
+        invalid++;
+        invalid_fields.push('occurred');
+    }
+    // bodypart: standard text, hidden, password, or textarea box
+    var bodypart = form.elements['bodypart'].value;
+    if (bodypart == null || bodypart === "") {
+        alertstr += '- Invalid entry for the "Bodypart" field\n';
+        invalid++;
+        invalid_fields.push('bodypart');
+    }
+    // treatment: standard text, hidden, password, or textarea box
+    var treatment = form.elements['treatment'].value;
+    if (treatment == null || treatment === "") {
+        alertstr += '- Invalid entry for the "What initial treatment was received?" field\n';
+        invalid++;
+        invalid_fields.push('treatment');
+    }
+    // notified: standard text, hidden, password, or textarea box
+    var notified = form.elements['notified'].value;
+    if (notified == null || notified === "") {
+        alertstr += '- Invalid entry for the "People whom you have reported this injury to:" field\n';
+        invalid++;
+        invalid_fields.push('notified');
+    }
+    // immediately: radio group or multiple checkboxes
+    var immediately = null;
+    var selected_immediately = 0;
+    for (var loop = 0; loop < form.elements['immediately'].length; loop++) {
+        if (form.elements['immediately'][loop].checked) {
+            immediately = form.elements['immediately'][loop].value;
+            selected_immediately++;
+            if (immediately == '_other_immediately') immediately = form.elements['_other_immediately'].value;
+            if (immediately == null || immediately === "") {
+                alertstr += '- Invalid entry for the "Was this injury reported immediately?" field\n';
+                invalid++;
+                invalid_fields.push('immediately');
+            }
+        } // if
+    } // for immediately
+    if (! selected_immediately) {
+        alertstr += '- Invalid entry for the "Was this injury reported immediately?" field\n';
+        invalid++;
+        invalid_fields.push('immediately');
+    }
+
+    // witness: standard text, hidden, password, or textarea box
+    var witness = form.elements['witness'].value;
+    if (witness == null || witness === "") {
+        alertstr += '- Invalid entry for the "Full name of witness to the injury" field\n';
+        invalid++;
+        invalid_fields.push('witness');
+    }
+    // duty_manager: standard text, hidden, password, or textarea box
+    var duty_manager = form.elements['duty_manager'].value;
+    if (duty_manager == null || duty_manager === "") {
+        alertstr += '- Invalid entry for the "Duty/Store Manager at time of injury" field\n';
+        invalid++;
+        invalid_fields.push('duty_manager');
+    }
+    // cause: standard text, hidden, password, or textarea box
+    var cause = form.elements['cause'].value;
+    if (cause == null || cause === "") {
+        alertstr += '- Invalid entry for the "Cause of injury" field\n';
+        invalid++;
+        invalid_fields.push('cause');
+    }
+    // corrective: standard text, hidden, password, or textarea box
+    var corrective = form.elements['corrective'].value;
+    if (corrective == null || corrective === "") {
+        alertstr += '- Invalid entry for the "Corrective actions taken" field\n';
+        invalid++;
+        invalid_fields.push('corrective');
+    }
+    if (invalid > 0 || alertstr != '') {
+        if (! invalid) invalid = 'The following';   // catch for programmer error
+        alert(''+invalid+' error(s) were encountered with your submission:'+'\n\n'
+                +alertstr+'\n'+'Please correct these fields and try again.');
+        return false;
+    }
+    return true;  // all checked ok
+}
+//-->
+</script>
+</head>
+<body>
+<h3>Workplace Injury Notification</h3>
+<noscript><span class="demoForm_invalid">Please enable Javascript or use a newer browser.</span></noscript>
+<p>Fields that are <span class="demoForm_required">highlighted</span> are required.</p>
+
+<!-- Generated by CGI::FormBuilder v3.10 available from www.formbuilder.org -->
+<form action="injury.pl" class="demoForm_form" method="post" onsubmit="return validate(this);">
+<div class="demoForm_state"><input id="_submitted" name="_submitted" type="hidden" value="1" /></div>
+<table class="demoForm">
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Brand</span></td>
+  <td class="demoForm_field"><input class="demoForm_radio" id="brand_RHC" name="brand" type="radio" value="RHC" /> <label class="demoForm_option" for="brand_RHC">R Hannah &amp; Co</label><br />
+<input class="demoForm_radio" id="brand_NOS" name="brand" type="radio" value="NOS" /> <label class="demoForm_option" for="brand_NOS">Number One Shoes</label><br />
+<input class="demoForm_radio" id="brand_NG" name="brand" type="radio" value="NG" /> <label class="demoForm_option" for="brand_NG">Ngahuia</label><br />
+</td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Location of person reporting</span></td>
+  <td class="demoForm_field"><select class="demoForm_select" id="location" name="location">
+  <option value="">-select-</option>
+  <option value="001 Hannahs DC">001 Hannahs DC</option>
+  <option value="010 Whangarei Hannahs">010 Whangarei Hannahs</option>
+  <option value="017 Albany Hannahs">017 Albany Hannahs</option>
+  <option value="018 Albany Hush Puppies">018 Albany Hush Puppies</option>
+  <option value="021 Queen St Hannahs">021 Queen St Hannahs</option>
+  <option value="025 West City Hannahs">025 West City Hannahs</option>
+  <option value="028 West City Hush Puppies">028 West City Hush Puppies</option>
+  <option value="030 Northwest Hannahs">030 Northwest Hannahs</option>
+  <option value="035 Lynn Mall Hannahs">035 Lynn Mall Hannahs</option>
+  <option value="037 St Lukes Hannahs">037 St Lukes Hannahs</option>
+  <option value="Takapuna Support Hub">Takapuna Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Full name of person reporting</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="reporter" name="reporter" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Position of person reporting</span></td>
+  <td class="demoForm_field"><select class="demoForm_select" id="position" name="position">
+  <option value="">-select-</option>
+  <option value="Store Manager">Store Manager</option>
+  <option value="Assistant Manager">Assistant Manager</option>
+  <option value="Support Manager">Support Manager</option>
+  <option value="Keyholder">Keyholder</option>
+  <option value="Senior Team Member">Senior Team Member</option>
+  <option value="Team member">Team member</option>
+  <option value="Support Hub">Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Date of injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="injuryDate" name="injuryDate" type="text" /> <span class="demoForm_comment">(in the format DD/MM/YY)</span></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Time of injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="injuryTime" name="injuryTime" type="text" /> <span class="demoForm_comment">(in the format HH:MM)</span></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Position of injured person</span></td>
+  <td class="demoForm_field"><select class="demoForm_select" id="injuredPosition" name="injuredPosition">
+  <option value="">-select-</option>
+  <option value="Store Manager">Store Manager</option>
+  <option value="Assistant Manager">Assistant Manager</option>
+  <option value="Support Manager">Support Manager</option>
+  <option value="Keyholder">Keyholder</option>
+  <option value="Senior Team Member">Senior Team Member</option>
+  <option value="Team member">Team member</option>
+  <option value="Support Hub">Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  <option value="Customer">Customer</option>
+  </select></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Injured person's status</span></td>
+  <td class="demoForm_field"><select class="demoForm_select" id="injuredStatus" name="injuredStatus">
+  <option value="">-select-</option>
+  <option value="Full time">Full time</option>
+  <option value="Part time">Part time</option>
+  <option value="fixed term">fixed term</option>
+  <option value="casual">casual</option>
+  <option value="contractor">contractor</option>
+  <option value="customer">customer</option>
+  </select></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Length of service</span></td>
+  <td class="demoForm_field"><select class="demoForm_select" id="serviceLength" name="serviceLength">
+  <option value="">-select-</option>
+  <option value="1st month">1st month</option>
+  <option value="2-6 months">2-6 months</option>
+  <option value="6-12 months">6-12 months</option>
+  <option value="1-2 years">1-2 years</option>
+  <option value="3-5 years">3-5 years</option>
+  <option value="5-10 years">5-10 years</option>
+  <option value="over 10 years">over 10 years</option>
+  </select></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Full name of injured person</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="injuredName" name="injuredName" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Details of Injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="injuryDetail" name="injuryDetail" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">What was the activity being completed at the time of injury?</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="activity" name="activity" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Where in the workplace did the injury occur?</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="area" name="area" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Describe exactly how the injury occurred</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="occurred" name="occurred" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Bodypart</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="bodypart" name="bodypart" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">What initial treatment was received?</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="treatment" name="treatment" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">People whom you have reported this injury to:</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="notified" name="notified" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Was this injury reported immediately?</span></td>
+  <td class="demoForm_field"><input class="demoForm_radio" id="immediately_Yes" name="immediately" onclick="fb_other_off('_other_immediately')" type="radio" value="Yes" /> <label class="demoForm_option" for="immediately_Yes">Yes</label><br />
+<input class="demoForm_radio" id="_immediately" name="immediately" onclick="fb_other_on('_other_immediately')" type="radio" value="_other_immediately" /> <label class="demoForm_option" for="_immediately">No:</label><br />
+ <input disabled="disabled" id="_other_immediately" name="_other_immediately" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Full name of witness to the injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="witness" name="witness" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Duty/Store Manager at time of injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="duty_manager" name="duty_manager" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Cause of injury</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="cause" name="cause" type="text" /> <span class="demoForm_comment">eg behavioural, training, environmental, equipment failure,  manual handlings</span></td>
+</tr>
+<tr>
+  <td class="demoForm_label">Any other additional comments</td>
+  <td class="demoForm_field"><input class="demoForm_input" id="comments" name="comments" type="text" /> <span class="demoForm_comment">(optional)</span></td>
+</tr>
+<tr>
+  <td class="demoForm_label"><span class="demoForm_required">Corrective actions taken</span></td>
+  <td class="demoForm_field"><input class="demoForm_input" id="corrective" name="corrective" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_label">Follow up training completed / required?</td>
+  <td class="demoForm_field"><input class="demoForm_input" id="followup" name="followup" type="text" /></td>
+</tr>
+<tr>
+  <td class="demoForm_submit" colspan="2"><input class="demoForm_button" id="_submit" name="_submit" onclick="this.form._submit.value = this.value;" type="submit" value="Update" /><input class="demoForm_button" id="_submit_2" name="_submit" onclick="this.form._submit.value = this.value;" type="submit" value="Cancel" /></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

@@ -1,0 +1,65 @@
+/* FormBuilder */
+/* Form specific*/
+
+.demoForm {
+    background: #ffc;
+    font-family: verdana,arial,sans-serif;
+    font-size: 10pt;
+}
+
+.NearMissForm {
+    background: #dfd;
+    font-family: verdana,arial,sans-serif;
+    font-size: 10pt;
+}
+
+.HazardForm {
+    background: #dff;
+    font-family: verdana,arial,sans-serif;
+    font-size: 14pt;
+}
+
+#@media screen and (min-width: 900px) {
+#  .NearMissForm_required {
+#      font-size: 20px;
+#  }
+#}
+
+
+/* Form Generic */
+.demoForm_label, .HazardForm_label, .NearMissForm_label {
+    text-align: right;
+    padding-right: 1em;
+    overflow-wrap: break-word;
+}
+ 
+.demoForm_comment, .HazardForm_comment, .NearMissForm_comment {
+    font-size: 8pt;
+    font-style: italic;
+}
+ 
+.demoForm_submit, .HazardForm_submit, .NearMissForm_submit {
+    text-align: center;
+}
+ 
+.demoForm_required, .HazardForm_required, .NearMissForm_required {
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+ 
+.demoForm_invalid, .HazardForm_invalid, .NearMissForm_invalid {
+    color: #c00;
+    font-weight: bold;
+}
+ 
+.demoForm_error, .HazardForm_error, .NearMissForm_error {
+    color: #c00;
+    font-style: italic;
+}
+
+.HazardForm_message, .NearMissForm_message,  {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+

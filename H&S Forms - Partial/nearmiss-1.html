@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+
+<head>
+<title>Workplace Near Miss Notification</title>
+<link href="injury.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"><!-- hide from old browsers
+// turn on/off any "other"fields
+function fb_other_on (othername) {
+    var box = document.getElementById(othername);
+    box.removeAttribute('disabled');
+}
+
+function fb_other_off (othername) {
+    var box = document.getElementById(othername);
+    box.setAttribute('disabled', 'disabled');
+}
+
+function validate_NearMiss (form) {
+    var alertstr = '';
+    var invalid  = 0;
+    var invalid_fields = new Array();
+
+  // validation overrides
+  if (this._submit.value == 'Cancel') return true;
+  if (this._submit.value == 'Query') return false;
+    // brand: radio group or multiple checkboxes
+    var brand = null;
+    var selected_brand = 0;
+    for (var loop = 0; loop < form.elements['brand'].length; loop++) {
+        if (form.elements['brand'][loop].checked) {
+            brand = form.elements['brand'][loop].value;
+            selected_brand++;
+            if (brand == null || brand === "") {
+                alertstr += '- Choose one of the "Brand" options\n';
+                invalid++;
+                invalid_fields.push('brand');
+            }
+        } // if
+    } // for brand
+    if (! selected_brand) {
+        alertstr += '- Choose one of the "Brand" options\n';
+        invalid++;
+        invalid_fields.push('brand');
+    }
+
+    // location: select list, always assume it's multiple to get all values
+    var location = null;
+    var selected_location = 0;
+    for (var loop = 0; loop < form.elements['location'].options.length; loop++) {
+        if (form.elements['location'].options[loop].selected) {
+            location = form.elements['location'].options[loop].value;
+            selected_location++;
+            if (location == null || location === "") {
+                alertstr += '- Select an option from the "Location of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('location');
+            }
+        } // if
+    } // for location
+    if (! selected_location) {
+        alertstr += '- Select an option from the "Location of person reporting" list\n';
+        invalid++;
+    }
+
+    // reporter: standard text, hidden, password, or textarea box
+    var reporter = form.elements['reporter'].value;
+    if (reporter == null || reporter === "") {
+        alertstr += '- Invalid entry for the "Full Name of person reporting" field\n';
+        invalid++;
+        invalid_fields.push('reporter');
+    }
+    // position: select list, always assume it's multiple to get all values
+    var position = null;
+    var selected_position = 0;
+    for (var loop = 0; loop < form.elements['position'].options.length; loop++) {
+        if (form.elements['position'].options[loop].selected) {
+            position = form.elements['position'].options[loop].value;
+            selected_position++;
+            if (position == null || position === "") {
+                alertstr += '- Select an option from the "Position of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('position');
+            }
+        } // if
+    } // for position
+    if (! selected_position) {
+        alertstr += '- Select an option from the "Position of person reporting" list\n';
+        invalid++;
+    }
+
+    // description: standard text, hidden, password, or textarea box
+    var description = form.elements['description'].value;
+    if (description == null || description === "") {
+        alertstr += '- Invalid entry for the "Description of hazard" field\n';
+        invalid++;
+        invalid_fields.push('description');
+    }
+    // cause: standard text, hidden, password, or textarea box
+    var cause = form.elements['cause'].value;
+    if (cause == null || cause === "") {
+        alertstr += '- Invalid entry for the "Cause of hazard" field\n';
+        invalid++;
+        invalid_fields.push('cause');
+    }
+    // rating: select list, always assume it's multiple to get all values
+    var rating = null;
+    var selected_rating = 0;
+    for (var loop = 0; loop < form.elements['rating'].options.length; loop++) {
+        if (form.elements['rating'].options[loop].selected) {
+            rating = form.elements['rating'].options[loop].value;
+            selected_rating++;
+            if (rating == null || rating === "") {
+                alertstr += '- Select an option from the "Identify risk rating <br/> on your Risk Register" list\n';
+                invalid++;
+                invalid_fields.push('rating');
+            }
+        } // if
+    } // for rating
+    if (! selected_rating) {
+        alertstr += '- Select an option from the "Identify risk rating <br/> on your Risk Register" list\n';
+        invalid++;
+    }
+
+    // action_taken: standard text, hidden, password, or textarea box
+    var action_taken = form.elements['action_taken'].value;
+    if (action_taken == null || action_taken === "") {
+        alertstr += '- Invalid entry for the "Details of immediate <br/> action taken" field\n';
+        invalid++;
+        invalid_fields.push('action_taken');
+    }
+    // eliminated: radio group or multiple checkboxes
+    var eliminated = null;
+    var selected_eliminated = 0;
+    for (var loop = 0; loop < form.elements['eliminated'].length; loop++) {
+        if (form.elements['eliminated'][loop].checked) {
+            eliminated = form.elements['eliminated'][loop].value;
+            selected_eliminated++;
+            if (eliminated == '_other_eliminated') eliminated = form.elements['_other_eliminated'].value;
+            if (eliminated == null || eliminated === "") {
+                alertstr += '- Invalid entry for the "Has the hazard <br/> been eliminated?" field\n';
+                invalid++;
+                invalid_fields.push('eliminated');
+            }
+        } // if
+    } // for eliminated
+    if (! selected_eliminated) {
+        alertstr += '- Invalid entry for the "Has the hazard <br/> been eliminated?" field\n';
+        invalid++;
+        invalid_fields.push('eliminated');
+    }
+
+    // further: standard text, hidden, password, or textarea box
+    var further = form.elements['further'].value;
+    if (further == null || further === "") {
+        alertstr += '- Invalid entry for the "Any further actions required?" field\n';
+        invalid++;
+        invalid_fields.push('further');
+    }
+    // reported: standard text, hidden, password, or textarea box
+    var reported = form.elements['reported'].value;
+    if (reported == null || reported === "") {
+        alertstr += '- Invalid entry for the "Who has this hazard <br/> been reported to?" field\n';
+        invalid++;
+        invalid_fields.push('reported');
+    }
+    if (invalid > 0 || alertstr != '') {
+        if (! invalid) invalid = 'The following';   // catch for programmer error
+        alert(''+invalid+' error(s) were encountered with your submission:'+'\n\n'
+                +alertstr+'\n'+'Please correct these fields and try again.');
+        return false;
+    }
+    return true;  // all checked ok
+}
+//-->
+</script>
+</head>
+<body>
+<h3>Workplace Near Miss Notification</h3>
+<noscript><span class="NearMissForm_invalid">Please enable Javascript or use a newer browser.</span></noscript>
+<p>Fields that are <span class="NearMissForm_required">highlighted</span> are required.</p>
+
+<!-- Generated by CGI::FormBuilder v3.10 available from www.formbuilder.org -->
+<form action="nearmiss.pl" class="NearMissForm_form" enctype="multipart/form-data" id="NearMiss" method="post" name="NearMiss" onsubmit="return validate_NearMiss(this);">
+<div class="NearMissForm_state" id="NearMiss_state"><input id="_submitted_NearMiss" name="_submitted_NearMiss" type="hidden" value="1" /></div>
+<table class="NearMissForm" id="NearMiss_body">
+<tr id="NearMiss_brand_row">
+  <td class="NearMissForm_label" id="NearMiss_brand_label"><span class="NearMissForm_required">Brand</span></td>
+  <td class="NearMissForm_field" id="NearMiss_brand_field"><input autocomplete="off" class="NearMissForm_radio" id="brand_RHC" name="brand" type="radio" value="RHC" /> <label class="NearMissForm_option" for="brand_RHC">R Hannah &amp; Co</label><br />
+<input autocomplete="off" class="NearMissForm_radio" id="brand_NOS" name="brand" type="radio" value="NOS" /> <label class="NearMissForm_option" for="brand_NOS">Number One Shoes</label><br />
+<input autocomplete="off" class="NearMissForm_radio" id="brand_NG" name="brand" type="radio" value="NG" /> <label class="NearMissForm_option" for="brand_NG">Ngahuia</label><br />
+</td>
+</tr>
+<tr id="NearMiss_location_row">
+  <td class="NearMissForm_label" id="NearMiss_location_label"><span class="NearMissForm_required">Location of person reporting</span></td>
+  <td class="NearMissForm_field" id="NearMiss_location_field"><select autocomplete="off" class="NearMissForm_select" id="location" name="location">
+  <option value="">-select-</option>
+  <option value="001 Hannahs DC">001 Hannahs DC</option>
+  <option value="010 Whangarei Hannahs">010 Whangarei Hannahs</option>
+  <option value="017 Albany Hannahs">017 Albany Hannahs</option>
+  <option value="Takapuna Support Hub">Takapuna Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr id="NearMiss_reporter_row">
+  <td class="NearMissForm_label" id="NearMiss_reporter_label"><span class="NearMissForm_required">Full Name of person reporting</span></td>
+  <td class="NearMissForm_field" id="NearMiss_reporter_field"><input autocomplete="off" class="NearMissForm_input" id="reporter" name="reporter" placeholder="Full name" type="text" /></td>
+</tr>
+<tr id="NearMiss_position_row">
+  <td class="NearMissForm_label" id="NearMiss_position_label"><span class="NearMissForm_required">Position of person reporting</span></td>
+  <td class="NearMissForm_field" id="NearMiss_position_field"><select autocomplete="off" class="NearMissForm_select" id="position" name="position">
+  <option value="">-select-</option>
+  <option value="Store Manager">Store Manager</option>
+  <option value="Assistant Manager">Assistant Manager</option>
+  <option value="Support Manager">Support Manager</option>
+  <option value="Keyholder">Keyholder</option>
+  <option value="Senior Team Member">Senior Team Member</option>
+  <option value="Team member">Team member</option>
+  <option value="Support Hub">Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr id="NearMiss_description_row">
+  <td class="NearMissForm_label" id="NearMiss_description_label"><span class="NearMissForm_required">Description of hazard</span></td>
+  <td class="NearMissForm_field" id="NearMiss_description_field"><input autocomplete="off" class="NearMissForm_input" id="description" name="description" placeholder="Description" type="text" /></td>
+</tr>
+<tr id="NearMiss_cause_row">
+  <td class="NearMissForm_label" id="NearMiss_cause_label"><span class="NearMissForm_required">Cause of hazard</span></td>
+  <td class="NearMissForm_field" id="NearMiss_cause_field"><input autocomplete="off" class="NearMissForm_input" id="cause" name="cause" placeholder="Cause" type="text" /></td>
+</tr>
+<tr id="NearMiss_rating_row">
+  <td class="NearMissForm_label" id="NearMiss_rating_label"><span class="NearMissForm_required">Identify risk rating <br/> on your Risk Register</span></td>
+  <td class="NearMissForm_field" id="NearMiss_rating_field"><select autocomplete="off" class="NearMissForm_select" id="rating" name="rating">
+  <option value="">-select-</option>
+  <option value="1">1 =&gt; Low Risk</option>
+  <option value="2">2 =&gt; Low Risk</option>
+  <option value="3">3 =&gt; Low Risk</option>
+  <option value="4">4 =&gt; Moderate Risk (Significant)</option>
+  <option value="5">5 =&gt; Moderate Risk (Significant)</option>
+  <option value="6">6 =&gt; Moderate Risk (Significant)</option>
+  <option value="8">8 =&gt; Moderate Risk (Significant)</option>
+  <option value="9">9 =&gt; Moderate Risk (Significant)</option>
+  <option value="10">10 =&gt; Moderate Risk (Significant)</option>
+  <option value="12">12 =&gt; Moderate Risk (Significant)</option>
+  <option value="15">15 =&gt; Unacceptable Risk</option>
+  <option value="16">16 =&gt; Unacceptable Risk</option>
+  <option value="20">20 =&gt; Unacceptable Risk</option>
+  <option value="25">25 =&gt; Unacceptable Risk</option>
+  </select></td>
+</tr>
+<tr id="NearMiss_action_taken_row">
+  <td class="NearMissForm_label" id="NearMiss_action_taken_label"><span class="NearMissForm_required">Details of immediate <br/> action taken</span></td>
+  <td class="NearMissForm_field" id="NearMiss_action_taken_field"><input autocomplete="off" class="NearMissForm_input" id="action_taken" name="action_taken" placeholder="action taken" type="text" /></td>
+</tr>
+<tr id="NearMiss_eliminated_row">
+  <td class="NearMissForm_label" id="NearMiss_eliminated_label"><span class="NearMissForm_required">Has the hazard <br/> been eliminated?</span></td>
+  <td class="NearMissForm_field" id="NearMiss_eliminated_field"><input autocomplete="off" class="NearMissForm_radio" default="What steps have been taken to minimise the" id="eliminated_Yes" name="eliminated" onclick="fb_other_off('_other_eliminated')" type="radio" value="Yes" /> <label class="NearMissForm_option" for="eliminated_Yes">Yes</label><br />
+<input autocomplete="off" class="NearMissForm_radio" default="What steps have been taken to minimise the" id="_eliminated" name="eliminated" onclick="fb_other_on('_other_eliminated')" type="radio" value="_other_eliminated" /> <label class="NearMissForm_option" for="_eliminated">No:</label><br />
+ <input disabled="disabled" id="_other_eliminated" name="_other_eliminated" type="text" /></td>
+</tr>
+<tr id="NearMiss_further_row">
+  <td class="NearMissForm_label" id="NearMiss_further_label"><span class="NearMissForm_required">Any further actions required?</span></td>
+  <td class="NearMissForm_field" id="NearMiss_further_field"><input autocomplete="off" class="NearMissForm_input" id="further" name="further" placeholder="Further action" type="text" /></td>
+</tr>
+<tr id="NearMiss_reported_row">
+  <td class="NearMissForm_label" id="NearMiss_reported_label"><span class="NearMissForm_required">Who has this hazard <br/> been reported to?</span></td>
+  <td class="NearMissForm_field" id="NearMiss_reported_field"><input autocomplete="off" class="NearMissForm_input" id="reported" name="reported" placeholder="Reported to" type="text" /></td>
+</tr>
+<tr id="NearMiss_comments_row">
+  <td class="NearMissForm_label" id="NearMiss_comments_label">Any other <br/> additional comments</td>
+  <td class="NearMissForm_field" id="NearMiss_comments_field"><input autocomplete="off" class="NearMissForm_input" id="comments" name="comments" placeholder="comment" type="text" /> <span class="NearMissForm_comment">(optional)</span></td>
+</tr>
+<tr id="NearMiss_photofile_row">
+  <td class="NearMissForm_label" id="NearMiss_photofile_label">Optional photo</td>
+  <td class="NearMissForm_field" id="NearMiss_photofile_field"><input accept="image/*" autocomplete="off" class="NearMissForm_file" id="photofile" name="photofile" type="file" /></td>
+</tr>
+<tr id="NearMiss_submit_row">
+  <td class="NearMissForm_submit" colspan="2" id="NearMiss_submit_field"><input class="NearMissForm_button" id="NearMiss_submit" name="_submit" onclick="this.form._submit.value = this.value;" type="submit" value="Submit" /><input class="NearMissForm_button" id="NearMiss_submit_2" name="_submit" onclick="this.form._submit.value = this.value;" type="submit" value="Cancel" /></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

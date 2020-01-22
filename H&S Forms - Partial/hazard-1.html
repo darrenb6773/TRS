@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+
+<head>
+<title>Hazard Notification - YAML edition</title>
+<link href="health_and_safety.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript"><!-- hide from old browsers
+// turn on/off any "other"fields
+function fb_other_on (othername) {
+    var box = document.getElementById(othername);
+    box.removeAttribute('disabled');
+}
+
+function fb_other_off (othername) {
+    var box = document.getElementById(othername);
+    box.setAttribute('disabled', 'disabled');
+}
+
+function validate_hazard (form) {
+    var alertstr = '';
+    var invalid  = 0;
+    var invalid_fields = new Array();
+
+// skip validation
+if (this._submit.value == 'Cancel') return true;
+    // brand: radio group or multiple checkboxes
+    var brand = null;
+    var selected_brand = 0;
+    for (var loop = 0; loop < form.elements['brand'].length; loop++) {
+        if (form.elements['brand'][loop].checked) {
+            brand = form.elements['brand'][loop].value;
+            selected_brand++;
+            if (brand == null || brand === "") {
+                alertstr += '- Choose one of the "Brand" options\n';
+                invalid++;
+                invalid_fields.push('brand');
+            }
+        } // if
+    } // for brand
+    if (! selected_brand) {
+        alertstr += '- Choose one of the "Brand" options\n';
+        invalid++;
+        invalid_fields.push('brand');
+    }
+
+    // location: select list, always assume it's multiple to get all values
+    var location = null;
+    var selected_location = 0;
+    for (var loop = 0; loop < form.elements['location'].options.length; loop++) {
+        if (form.elements['location'].options[loop].selected) {
+            location = form.elements['location'].options[loop].value;
+            selected_location++;
+            if (location == null || location === "") {
+                alertstr += '- Select an option from the "Location of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('location');
+            }
+        } // if
+    } // for location
+    if (! selected_location) {
+        alertstr += '- Select an option from the "Location of person reporting" list\n';
+        invalid++;
+    }
+
+    // reporter: standard text, hidden, password, or textarea box
+    var reporter = form.elements['reporter'].value;
+    if (reporter == null || reporter === "") {
+        alertstr += '- Invalid entry for the "Full name of person reporting" field\n';
+        invalid++;
+        invalid_fields.push('reporter');
+    }
+    // position: select list, always assume it's multiple to get all values
+    var position = null;
+    var selected_position = 0;
+    for (var loop = 0; loop < form.elements['position'].options.length; loop++) {
+        if (form.elements['position'].options[loop].selected) {
+            position = form.elements['position'].options[loop].value;
+            selected_position++;
+            if (position == null || position === "") {
+                alertstr += '- Select an option from the "Position of person reporting" list\n';
+                invalid++;
+                invalid_fields.push('position');
+            }
+        } // if
+    } // for position
+    if (! selected_position) {
+        alertstr += '- Select an option from the "Position of person reporting" list\n';
+        invalid++;
+    }
+
+    // description: standard text, hidden, password, or textarea box
+    var description = form.elements['description'].value;
+    if (description == null || description === "") {
+        alertstr += '- Invalid entry for the "Description of hazard" field\n';
+        invalid++;
+        invalid_fields.push('description');
+    }
+    // cause: standard text, hidden, password, or textarea box
+    var cause = form.elements['cause'].value;
+    if (cause == null || cause === "") {
+        alertstr += '- Invalid entry for the "Cause of hazard" field\n';
+        invalid++;
+        invalid_fields.push('cause');
+    }
+    // rating: select list, always assume it's multiple to get all values
+    var rating = null;
+    var selected_rating = 0;
+    for (var loop = 0; loop < form.elements['rating'].options.length; loop++) {
+        if (form.elements['rating'].options[loop].selected) {
+            rating = form.elements['rating'].options[loop].value;
+            selected_rating++;
+            if (rating == null || rating === "") {
+                alertstr += '- Select an option from the "Identify risk rating on your Risk Register" list\n';
+                invalid++;
+                invalid_fields.push('rating');
+            }
+        } // if
+    } // for rating
+    if (! selected_rating) {
+        alertstr += '- Select an option from the "Identify risk rating on your Risk Register" list\n';
+        invalid++;
+    }
+
+    // action_taken: standard text, hidden, password, or textarea box
+    var action_taken = form.elements['action_taken'].value;
+    if (action_taken == null || action_taken === "") {
+        alertstr += '- Invalid entry for the "Details of immediate action taken" field\n';
+        invalid++;
+        invalid_fields.push('action_taken');
+    }
+    // eliminated: radio group or multiple checkboxes
+    var eliminated = null;
+    var selected_eliminated = 0;
+    for (var loop = 0; loop < form.elements['eliminated'].length; loop++) {
+        if (form.elements['eliminated'][loop].checked) {
+            eliminated = form.elements['eliminated'][loop].value;
+            selected_eliminated++;
+            if (eliminated == '_other_eliminated') eliminated = form.elements['_other_eliminated'].value;
+            if (eliminated == null || eliminated === "") {
+                alertstr += '- Invalid entry for the "Has the hazard been eliminated?" field\n';
+                invalid++;
+                invalid_fields.push('eliminated');
+            }
+        } // if
+    } // for eliminated
+    if (! selected_eliminated) {
+        alertstr += '- Invalid entry for the "Has the hazard been eliminated?" field\n';
+        invalid++;
+        invalid_fields.push('eliminated');
+    }
+
+    // further: standard text, hidden, password, or textarea box
+    var further = form.elements['further'].value;
+    if (further == null || further === "") {
+        alertstr += '- Invalid entry for the "Any further actions required?" field\n';
+        invalid++;
+        invalid_fields.push('further');
+    }
+    // reported: standard text, hidden, password, or textarea box
+    var reported = form.elements['reported'].value;
+    if (reported == null || reported === "") {
+        alertstr += '- Invalid entry for the "Who has this hazard been reported to?" field\n';
+        invalid++;
+        invalid_fields.push('reported');
+    }
+    if (invalid > 0 || alertstr != '') {
+        if (! invalid) invalid = 'The following';   // catch for programmer error
+        alert(''+invalid+' error(s) were encountered with your submission:'+'\n\n'
+                +alertstr+'\n'+'Please correct these fields and try again.');
+        return false;
+    }
+    return true;  // all checked ok
+}
+//-->
+</script>
+</head>
+<body>
+<h3>Hazard Notification - YAML edition</h3>
+<noscript><span class="HazardForm_invalid">Please enable Javascript or use a newer browser.</span></noscript>
+<p>Fields that are <span class="HazardForm_required">highlighted</span> are required.</p>
+
+<!-- Generated by CGI::FormBuilder v3.10 available from www.formbuilder.org -->
+<form action="hazard.pl" class="HazardForm_form" id="hazard" method="post" name="hazard" onsubmit="return validate_hazard(this);">
+<div class="HazardForm_state" id="hazard_state"><input id="_submitted_hazard" name="_submitted_hazard" type="hidden" value="1" /></div>
+<table class="HazardForm" id="hazard_body">
+<tr id="hazard_brand_row">
+  <td class="HazardForm_label" id="hazard_brand_label"><span class="HazardForm_required">Brand</span></td>
+  <td class="HazardForm_field" id="hazard_brand_field"><input autocomplete="off" class="HazardForm_radio" id="brand_RHC" name="brand" type="radio" value="RHC" /> <label class="HazardForm_option" for="brand_RHC">R Hannah &amp; Co</label><br />
+<input autocomplete="off" class="HazardForm_radio" id="brand_NOS" name="brand" type="radio" value="NOS" /> <label class="HazardForm_option" for="brand_NOS">Number One Shoes</label><br />
+<input autocomplete="off" class="HazardForm_radio" id="brand_NG" name="brand" type="radio" value="NG" /> <label class="HazardForm_option" for="brand_NG">Ngahuia</label><br />
+</td>
+</tr>
+<tr id="hazard_location_row">
+  <td class="HazardForm_label" id="hazard_location_label"><span class="HazardForm_required">Location of person reporting</span></td>
+  <td class="HazardForm_field" id="hazard_location_field"><select autocomplete="off" class="HazardForm_select" id="location" name="location">
+  <option value="">-select-</option>
+  <option value="001 Hannahs DC">001 Hannahs DC</option>
+  <option value="010 Whangarei Hannahs">010 Whangarei Hannahs</option>
+  <option value="017 Albany Hannahs">017 Albany Hannahs</option>
+  <option value="Takapuna Support Hub">Takapuna Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr id="hazard_reporter_row">
+  <td class="HazardForm_label" id="hazard_reporter_label"><span class="HazardForm_required">Full name of person reporting</span></td>
+  <td class="HazardForm_field" id="hazard_reporter_field"><input autocomplete="off" class="HazardForm_input" id="reporter" name="reporter" type="text" /></td>
+</tr>
+<tr id="hazard_position_row">
+  <td class="HazardForm_label" id="hazard_position_label"><span class="HazardForm_required">Position of person reporting</span></td>
+  <td class="HazardForm_field" id="hazard_position_field"><select autocomplete="off" class="HazardForm_select" id="position" name="position">
+  <option value="">-select-</option>
+  <option value="Store Manager">Store Manager</option>
+  <option value="Assistant Manager">Assistant Manager</option>
+  <option value="Support Manager">Support Manager</option>
+  <option value="Keyholder">Keyholder</option>
+  <option value="Senior Team Member">Senior Team Member</option>
+  <option value="Team member">Team member</option>
+  <option value="Support Hub">Support Hub</option>
+  <option value="Distribution Centre">Distribution Centre</option>
+  <option value="Regional Manager">Regional Manager</option>
+  </select></td>
+</tr>
+<tr id="hazard_description_row">
+  <td class="HazardForm_label" id="hazard_description_label"><span class="HazardForm_required">Description of hazard</span></td>
+  <td class="HazardForm_field" id="hazard_description_field"><input autocomplete="off" class="HazardForm_input" id="description" name="description" type="text" /></td>
+</tr>
+<tr id="hazard_cause_row">
+  <td class="HazardForm_label" id="hazard_cause_label"><span class="HazardForm_required">Cause of hazard</span></td>
+  <td class="HazardForm_field" id="hazard_cause_field"><input autocomplete="off" class="HazardForm_input" id="cause" name="cause" type="text" /> <span class="HazardForm_comment"><br/> eg training, environmental, behavioural, equipment</span></td>
+</tr>
+<tr id="hazard_rating_row">
+  <td class="HazardForm_label" id="hazard_rating_label"><span class="HazardForm_required">Identify risk rating on your Risk Register</span></td>
+  <td class="HazardForm_field" id="hazard_rating_field"><select autocomplete="off" class="HazardForm_select" id="rating" name="rating">
+  <option value="">-select-</option>
+  <option value="1">1 =&gt; Low Risk</option>
+  <option value="2">2 =&gt; Low Risk</option>
+  <option value="3">3 =&gt; Low Risk</option>
+  <option value="4">4 =&gt; Moderate Risk (Significant)</option>
+  <option value="5">5 =&gt; Moderate Risk (Significant)</option>
+  <option value="6">6 =&gt; Moderate Risk (Significant)</option>
+  <option value="8">8 =&gt; Moderate Risk (Significant)</option>
+  <option value="9">9 =&gt; Moderate Risk (Significant)</option>
+  <option value="10">10 =&gt; Moderate Risk (Significant)</option>
+  <option value="12">12 =&gt; Moderate Risk (Significant)</option>
+  <option value="15">15 =&gt; Unacceptable Risk</option>
+  <option value="16">16 =&gt; Unacceptable Risk</option>
+  <option value="20">20 =&gt; Unacceptable Risk</option>
+  <option value="25">25 =&gt; Unacceptable Risk</option>
+  </select></td>
+</tr>
+<tr id="hazard_action_taken_row">
+  <td class="HazardForm_label" id="hazard_action_taken_label"><span class="HazardForm_required">Details of immediate action taken</span></td>
+  <td class="HazardForm_field" id="hazard_action_taken_field"><input autocomplete="off" class="HazardForm_input" id="action_taken" name="action_taken" type="text" /></td>
+</tr>
+<tr id="hazard_eliminated_row">
+  <td class="HazardForm_label" id="hazard_eliminated_label"><span class="HazardForm_required">Has the hazard been eliminated?</span></td>
+  <td class="HazardForm_field" id="hazard_eliminated_field"><input autocomplete="off" class="HazardForm_radio" id="eliminated_Yes" name="eliminated" onclick="fb_other_off('_other_eliminated')" type="radio" value="Yes" /> <label class="HazardForm_option" for="eliminated_Yes">Yes</label><br />
+<input autocomplete="off" class="HazardForm_radio" id="_eliminated" name="eliminated" onclick="fb_other_on('_other_eliminated')" type="radio" value="_other_eliminated" /> <label class="HazardForm_option" for="_eliminated">No:</label><br />
+ <input disabled="disabled" id="_other_eliminated" name="_other_eliminated" type="text" /> <span class="HazardForm_comment"><br/> If the hazard hasn't been <br/> eliminated what steps have been <br/> taken to minimise the risk?</span></td>
+</tr>
+<tr id="hazard_further_row">
+  <td class="HazardForm_label" id="hazard_further_label"><span class="HazardForm_required">Any further actions required?</span></td>
+  <td class="HazardForm_field" id="hazard_further_field"><input autocomplete="off" class="HazardForm_input" id="further" name="further" type="text" /></td>
+</tr>
+<tr id="hazard_reported_row">
+  <td class="HazardForm_label" id="hazard_reported_label"><span class="HazardForm_required">Who has this hazard been reported to?</span></td>
+  <td class="HazardForm_field" id="hazard_reported_field"><input autocomplete="off" class="HazardForm_input" id="reported" name="reported" type="text" /></td>
+</tr>
+<tr id="hazard_comments_row">
+  <td class="HazardForm_label" id="hazard_comments_label">Any other additional comments</td>
+  <td class="HazardForm_field" id="hazard_comments_field"><input autocomplete="off" class="HazardForm_input" id="comments" name="comments" type="text" /> <span class="HazardForm_comment">(optional)</span></td>
+</tr>
+<tr id="hazard_submit_row">
+  <td class="HazardForm_submit" colspan="2" id="hazard_submit_field"><input class="HazardForm_button" id="hazard_submit" name="_submit" type="submit" value="Update, Cancel" /></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

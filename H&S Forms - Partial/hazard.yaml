@@ -1,0 +1,41 @@
+# -*- yaml -*-
+# _DB_FIELD: LABEL
+- _brand: Brand
+  linebreaks: 1
+  options: 
+    - [RHC, R Hannah & Co]
+    - [NOS, Number One Shoes]
+    - [NG,  Ngahuia]
+#   - [stored, displayed]
+- _location:      Location of person reporting
+- _reporter:      Full name of person reporting
+- _position:      Position of person reporting
+  options:        [Store Manager, Assistant Manager, Support Manager, Keyholder, Senior Team Member, Team member, Support Hub, Distribution Centre, Regional Manager]
+- _description:   Description of hazard
+- _cause:         Cause of hazard
+  comment:        <br/> eg training, environmental, behavioural, equipment
+- _rating:        Identify risk rating on your Risk Register
+- _action_taken:  Details of immediate action taken
+- _eliminated:    Has the hazard been eliminated?
+  other:          1
+  options:        Yes
+  type:           radio
+  linebreaks:     1
+  comment:        <br/> If the hazard hasn't been <br/> eliminated what steps have been <br/> taken to minimise the risk?
+- _further:       Any further actions required?
+- _reported:      Who has this hazard been reported to?
+- _comments:      Any other additional comments 
+  comment:        (optional)
+  required:       0
+---
+name:       hazard
+title:      Hazard Notification - YAML edition
+styleclass: HazardForm
+ 
+# create two submit buttons, and skip validation on "Cancel"
+submit:  Update, Cancel
+jsfunc: |
+  // skip validation
+  if (this._submit.value == 'Cancel') return true;
+---
+# Admin fields
