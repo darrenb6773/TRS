@@ -1,0 +1,58 @@
+AddExtender("wwwsk32i.dll")
+AddExtender("wsrch32i.dll")
+
+
+LclDir=IniReadPvt("Local", "Directory", "c:\import\", "movemail.ini")
+LclExtn=IniReadPvt("Local", "Extentions", "*.mai", "movemail.ini")
+LclArch=IniReadPvt("Local", "ArchDir", "c:\archive\br_mail\", "movemail.ini")
+MailSvr=IniReadPvt("Server", "Mailsvr", "mail.hannahs", "movemail.ini")
+FromDomain=IniReadPvt("Server", "FromDomain", "hannahs.co.nz", "movemail.ini")
+ToDomain=IniReadPvt("Server", "ToDomain", "hannahs.co.nz", "movemail.ini")
+
+dasubj    = "Branch Mail"
+count=0
+SrchHandle = SrchInit(LclDir, LclExtn, "", "", 16 )
+SrchFile=srchNext(SrchHandle)
+while SrchFile != ""
+	frombr=itemextract(3,SrchFile,"\")
+	ArchFile = StrReplace(SrchFile,LclDir,"")
+	ArchFile = StrCat(LclArch,StrReplace(ArchFile,"\",""))
+	If !FileAppend( SrchFile, ArchFile) then
+	  dasubj   = "Branch Mail processsing failure"
+	  damsg    = "Processing failed on %whofrom% %whoto% in %SrchFile%"
+	  whofrom  = "helpdesk@hannahs.co.nz"
+	  whoto    = "helpdesk@hannahs.co.nz"
+	  rc = smtpSendText (mailsvr, whofrom, whoto, dasubj, damsg)
+	  display(15,"ERROR","Failed to write to the combined file")
+		Exit
+	End If
+	whofrom   = strcat(frombr,"@",FromDomain)
+	whotoshort = fileroot(SrchFile)
+	whoto     = strcat(whotoshort,"@",ToDomain)
+;	message(whofrom,whoto)
+	rc = smtpSendFile (MailSvr, whofrom, whoto, dasubj, SrchFile)
+	if !rc then
+	  dasubj   = "Branch Mail processsing failure"
+	  damsg    = "Processing failed on %whofrom% %whoto% in %SrchFile%"
+	  whofrom  = "helpdesk@hannahs.co.nz"
+	  whoto    = "helpdesk@hannahs.co.nz"
+	  rc = smtpSendText (mailsvr, whofrom, whoto, dasubj, damsg)
+	  display(15,"Emailing the file from %frombr% in couldn't be sent","")
+	  exit
+	endif
+	count = count +1
+	timedelay(5)
+	DeleteFile=SrchFile
+	SrchFile=srchNext(SrchHandle)
+	FileDelete(DeleteFile)
+endwhile
+srchFree(SrchHandle)
+
+dasubj   = "Branch Mail processsing success"
+damsg    = "Processed %count% messages"
+whofrom  = "poller@hannahs.co.nz"
+whoto    = "helpdesk@mail.hannahs"
+rc = smtpSendText (mailsvr, whofrom, whoto, dasubj, damsg)
+
+display(30,"Completed ","%count% messages")
+

@@ -1,0 +1,62 @@
+
+
+;;;The LISTENER script
+; Use CTRL-Break to exit
+AddExtender("WWWSK32I.DLL")
+lastcheck = TimeYmdHms()
+BoxOpen("Listener","")
+BoxesUp("400,400,600,600", @icon)
+IntControl(1007,1, 1, "", "") 
+listensocket=sOpen()
+sListen(listensocket,"8101")   ; use ftp port for lack of anything better
+Served=0
+
+profile=Environment( "USERPROFILE" )
+shortname = 'PrintListener.log'
+ResultsFilename = StrCat( profile  , "\desktop\", shortname )
+
+Display(3, "Log file will be", ResultsFilename)
+
+while 1
+   datasocket=sAccept(listensocket,@TRUE)  ; Block for a connection
+   if datasocket
+       gosub ProcessConnect
+   else
+      sClose(listenSocket)
+      msg=wxGetLastErr()
+      Message("Socket Error",msg)
+      exit
+  endif
+  if IntControl(1007,0, 1, "", "") > 0 then
+    exit
+  end if
+endwhile
+exit   
+
+:ProcessConnect
+	Served=Served+1
+	rqst=sRecvLine(datasocket,255)
+
+	Results = FileOpen( ResultsFilename, "APPEND" )
+	FileWrite( Results, rqst )
+	FileClose(Results)
+
+	firstpart=ItemExtract(1,rqst," ")
+	lastpart = strsub(rqst, strlen(firstpart)+1,-1)
+	if WinExist("Adobe Reader") then
+		Display(1,"Sending enter","")
+		WinActivate("Adobe Reader")
+		SendKey("{ENTER}") ; Flush error boxes
+	end if
+;	Message(firstpart,lastpart)
+	run(firstpart,lastpart)
+	sSendLine(datasocket,"OK")
+	sClose(datasocket)
+return
+
+
+
+
+
+
+
